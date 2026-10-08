@@ -3,7 +3,7 @@
   "displayName": "DevContainer Composer",
   "description": "Pick packages in a webview and generate a ready-to-use .devcontainer with persistent volumes for CLI logins, Copilot sessions and shell history.",
   "version": "0.1.0",
-  "publisher": "your-publisher",
+  "publisher": "AdilElKanabi",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -197,7 +197,7 @@ Rebuilt from scratch on 2026-10-08.
 | CI and publish workflow | ✅ Green on GitHub (`elkaadka/devcontainer-extension`); publish runs on a `v*` tag and needs the `VSCE_PAT` secret |
 | End-to-end dev container test | ⚠️ Scripts written (`e2e/`), not run yet. The build environment has no Docker. |
 | Copilot Chat history persistence | ⚠️ Not verified yet. Part of the chat history may be stored by the **local** VS Code client (keyed per workspace) rather than in the container. A manual test is needed: chat, rebuild, check. Adjust the persisted paths based on the result. |
-| Marketplace metadata | ⚠️ `publisher` is the placeholder `your-publisher`; `repository` points to GitHub; LICENSE is MIT. Screenshots are still missing from the README. |
+| Marketplace metadata | ⚠️ `publisher` is `AdilElKanabi` (same as Cost Lens); `repository` points to GitHub; LICENSE is MIT. Screenshots are still missing from the README. |
 
 ## Next steps
 
@@ -205,7 +205,6 @@ Rebuilt from scratch on 2026-10-08.
 2. Test the webview manually in VS Code (F5 / Extension Development Host or the `.vsix`), then do the Copilot Chat rebuild test.
 3. Decide how the Microsoft corporate feeds are offered. Proposal: a one-click "Corporate feeds" source preset in the panel plus user settings, leaving the public defaults empty.
 4. Marketplace prerequisites:
-   - Create a publisher and set `publisher` in `package.json`.
    - Add screenshots to `README.md`.
    - Add the `VSCE_PAT` secret.
 5. Later ideas:
