@@ -194,10 +194,10 @@ Rebuilt from scratch on 2026-10-08.
 | Unit tests | ✅ 24/24 passing (includes `bash -n` / `sh -n` syntax checks of the generated scripts) |
 | Generated shell logic | ✅ Dockerfile `RUN` and `post-create.sh` executed against a temporary home directory: migration, symlinks, idempotent rc block, volume data takes precedence |
 | Type-check, bundle, `.vsix` packaging | ✅ Done (~27 KB) |
-| CI and publish workflow | ✅ Written, not run yet (no Git repo yet) |
+| CI and publish workflow | ✅ Green on GitHub (`elkaadka/devcontainer-extension`); publish runs on a `v*` tag and needs the `VSCE_PAT` secret |
 | End-to-end dev container test | ⚠️ Scripts written (`e2e/`), not run yet. The build environment has no Docker. |
 | Copilot Chat history persistence | ⚠️ Not verified yet. Part of the chat history may be stored by the **local** VS Code client (keyed per workspace) rather than in the container. A manual test is needed: chat, rebuild, check. Adjust the persisted paths based on the result. |
-| Marketplace metadata | ⚠️ `publisher` is the placeholder `your-publisher`; `repository` is not set (packaging uses `--allow-missing-repository`); LICENSE is MIT. Screenshots are still missing from the README. |
+| Marketplace metadata | ⚠️ `publisher` is the placeholder `your-publisher`; `repository` points to GitHub; LICENSE is MIT. Screenshots are still missing from the README. |
 
 ## Next steps
 
@@ -206,7 +206,6 @@ Rebuilt from scratch on 2026-10-08.
 3. Decide how the Microsoft corporate feeds are offered. Proposal: a one-click "Corporate feeds" source preset in the panel plus user settings, leaving the public defaults empty.
 4. Marketplace prerequisites:
    - Create a publisher and set `publisher` in `package.json`.
-   - Set the `repository` URL.
    - Add screenshots to `README.md`.
    - Add the `VSCE_PAT` secret.
 5. Later ideas:

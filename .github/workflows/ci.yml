@@ -41,6 +41,6 @@ jobs:
       - name: Check that the tag matches package.json
         run: test "v$(node -p "require('./package.json').version")" = "${GITHUB_REF_NAME}"
       - name: Publish to the VS Code Marketplace
-        run: npx vsce publish --no-dependencies --allow-missing-repository
+        run: npx vsce publish --no-dependencies
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
