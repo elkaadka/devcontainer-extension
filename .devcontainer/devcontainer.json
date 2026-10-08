@@ -1,0 +1,33 @@
+{
+  "name": "Node.js, Python, Azure CLI and Git",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "."
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12"
+    },
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "NPM_CONFIG_REGISTRY": "https://packagefeedproxy.microsoft.io/npm/",
+    "PIP_INDEX_URL": "https://packagefeedproxy.microsoft.io/pypi/simple",
+    "PIP_TRUSTED_HOST": "packagefeedproxy.microsoft.io"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-azuretools.vscode-azure-account"
+      ]
+    }
+  }
+}

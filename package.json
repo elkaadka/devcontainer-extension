@@ -1,0 +1,219 @@
+{
+  "name": "devcontainer-composer",
+  "displayName": "DevContainer Composer",
+  "description": "Pick packages in a webview and generate a ready-to-use .devcontainer with persistent volumes for CLI logins, Copilot sessions and shell history.",
+  "version": "0.1.0",
+  "publisher": "your-publisher",
+  "license": "MIT",
+  "icon": "media/icon.png",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "devcontainer",
+    "dev container",
+    "docker",
+    "codespaces",
+    "copilot"
+  ],
+  "main": "./dist/extension.js",
+  "extensionKind": [
+    "workspace",
+    "ui"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "devcontainerComposer.open",
+        "title": "Create / Edit Dev Container",
+        "category": "DevContainer Composer",
+        "icon": "$(package)"
+      },
+      {
+        "command": "devcontainerComposer.generateDefault",
+        "title": "Generate Dev Container with Default Packages",
+        "category": "DevContainer Composer"
+      }
+    ],
+    "configuration": {
+      "title": "DevContainer Composer",
+      "properties": {
+        "devcontainerComposer.defaultPackages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "node",
+            "typescript",
+            "python",
+            "azure-cli",
+            "azd",
+            "copilot"
+          ],
+          "markdownDescription": "Package ids that are pre-selected in the panel. An entry may pin a version with `id@version`, e.g. `node@20`."
+        },
+        "devcontainerComposer.baseImage": {
+          "type": "string",
+          "default": "mcr.microsoft.com/devcontainers/base:ubuntu",
+          "description": "Base image used in the generated Dockerfile (FROM)."
+        },
+        "devcontainerComposer.remoteUser": {
+          "type": "string",
+          "default": "vscode",
+          "description": "User that VS Code runs as inside the container."
+        },
+        "devcontainerComposer.sources.npmRegistry": {
+          "type": "string",
+          "default": "",
+          "description": "npm registry or proxy URL (NPM_CONFIG_REGISTRY). Empty = public registry."
+        },
+        "devcontainerComposer.sources.pipIndexUrl": {
+          "type": "string",
+          "default": "",
+          "description": "pip index or proxy URL (PIP_INDEX_URL). Empty = public PyPI."
+        },
+        "devcontainerComposer.sources.pipTrustedHost": {
+          "type": "string",
+          "default": "",
+          "description": "pip trusted host (PIP_TRUSTED_HOST), e.g. pypi.example.com."
+        },
+        "devcontainerComposer.sources.imageMirror": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Registry that replaces `mcr.microsoft.com` in the base image, e.g. `registry.example.com/mcr`."
+        },
+        "devcontainerComposer.sources.featureMirror": {
+          "type": "string",
+          "default": "",
+          "markdownDescription": "Registry that replaces `ghcr.io` in Dev Container Feature references, e.g. `registry.example.com/ghcr`."
+        },
+        "devcontainerComposer.sharedVolumeName": {
+          "type": "string",
+          "default": "devc-shared-auth",
+          "description": "Docker volume shared by all projects (CLI logins)."
+        },
+        "devcontainerComposer.showStatusBar": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show the Dev Container button in the status bar."
+        },
+        "devcontainerComposer.customPackages": {
+          "type": "array",
+          "default": [],
+          "markdownDescription": "Extra catalog entries. An entry with the same `id` as a built-in package replaces it.",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "label"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]*$"
+              },
+              "label": {
+                "type": "string"
+              },
+              "category": {
+                "type": "string",
+                "default": "Custom"
+              },
+              "description": {
+                "type": "string"
+              },
+              "feature": {
+                "type": "string",
+                "description": "Dev Container Feature reference, e.g. ghcr.io/devcontainers/features/rust:1"
+              },
+              "featureOptions": {
+                "type": "object"
+              },
+              "versionOption": {
+                "type": "string",
+                "description": "Feature option that receives the selected version (default: version)."
+              },
+              "versions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "install": {
+                "type": "string",
+                "description": "Shell command run in post-create.sh. ${version} is replaced by the selected version."
+              },
+              "requires": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "extensions": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "persist": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "path",
+                    "scope"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "path": {
+                      "type": "string",
+                      "description": "Path relative to the home directory, e.g. .config/foo"
+                    },
+                    "scope": {
+                      "type": "string",
+                      "enum": [
+                        "shared",
+                        "project"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "watch": "node esbuild.mjs --watch",
+    "typecheck": "tsc --noEmit -p .",
+    "test": "rm -rf out-test && tsc -p tsconfig.test.json && node --test \"out-test/test/**/*.test.js\"",
+    "package": "vsce package --no-dependencies --allow-missing-repository",
+    "vscode:prepublish": "npm run build -- --production"
+  },
+  "dependencies": {
+    "jsonc-parser": "^3.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "@types/vscode": "~1.95.0",
+    "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.28.2",
+    "typescript": "~5.9.3"
+  }
+}

@@ -1,0 +1,13 @@
+# Image that runs the end-to-end test: Node.js, Docker CLI (talks to the host daemon) and @devcontainers/cli.
+FROM node:22-trixie
+
+ARG NPM_CONFIG_REGISTRY
+ENV NPM_CONFIG_REGISTRY=${NPM_CONFIG_REGISTRY}
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends docker-cli docker-buildx jq \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN npm install -g @devcontainers/cli
+
+WORKDIR /repo
